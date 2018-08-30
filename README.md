@@ -1,5 +1,5 @@
-# EOS claimer
+# Fibos claimer
 
-Node script for EOS BP to claim their rewards automatically.
+Node script for Fibos BP to claim their rewards automatically.
 
 change your owner info in config.json.
