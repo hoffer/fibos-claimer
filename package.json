@@ -1,5 +1,5 @@
 {
-  "name": "eos-claimer",
+  "name": "fibos-claimer",
   "version": "1.0.0",
   "description": "auto script for bp to claim rewards",
   "main": "claimer.js",
@@ -9,6 +9,6 @@
   "author": "Joshua Qiu",
   "license": "ISC",
   "dependencies": {
-    "eosjs": "^16.0.0"
+    "fibos.js": "^0.1.0"
   }
 }

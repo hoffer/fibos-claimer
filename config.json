@@ -1,7 +1,7 @@
 {
-    "httpEndPoint": "https://api.eoseco.com",
-    "chainId": "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906",
+    "httpEndPoint": "https://api.fibos.rocks",
+    "chainId": "6aa7bd33b6b45192465afa3553dedb531acaaff8928cf64b70bd4c5e49b7ec6a",
     "wif": "",
-    "producerName": "eosecoeoseco",
+    "producerName": "fibosrockskr",
     "permission": "claimer"
 }

@@ -1,4 +1,4 @@
-const Eos = require('eosjs');
+const Fibos = require('fibos.js');
 const config = require('./config.json');
 const httpEndPoint = config.httpEndPoint;
 const chainId = config.chainId;
@@ -6,7 +6,7 @@ const wif = config.wif;
 const producerName = config.producerName;
 const permission = config.permission;
 
-var eos = Eos({
+var fibos = Fibos({
     httpEndpoint: httpEndPoint, chainId: chainId,
     keyProvider: wif
 });
@@ -35,7 +35,7 @@ function cacheRewards() {
     }).then(rewards => {
         console.log("current rewards:", rewards);
         if (rewards > 0) {
-            eos.transaction({
+            fibos.transaction({
                 // ...headers,
                 actions: [
                     {
@@ -63,7 +63,7 @@ function cacheRewards() {
 
 function getGlobal() {
     return new Promise((resolve, reject) => {
-        eos.getTableRows({
+        fibos.getTableRows({
             "scope": "eosio",
             "code": "eosio",
             "table": "global",
@@ -79,7 +79,7 @@ function getGlobal() {
 
 function getProducer(name) {
     return new Promise((resolve, reject) => {
-        eos.getTableRows({
+        fibos.getTableRows({
             "scope": "eosio",
             "code": "eosio",
             "table": "producers",
