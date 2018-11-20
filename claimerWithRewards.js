@@ -105,7 +105,8 @@ const calculate = (balance, account, isTransfer) => {
   console.log(amount)
 
   let fuckMoney = 0
-  const fukcers = ['huobipool123', 'fibosfeijiaa', 'masterbyteso', 'hoffercqtest'] // reward list
+  const fukcers = ['huobipool123', 'fibosfeijiaa', 'masterbyteso'] // reward list
+  //const fukcers = ['hoffercqtest']
   const percent = 0.6 // percentage
 
   stackArr.map(user => {
@@ -113,7 +114,7 @@ const calculate = (balance, account, isTransfer) => {
       let quant = user.staked / amount / 10000 * percent * balance // reward for voter
       fuckMoney = fuckMoney + quant
       console.log(`${user.owner} will get ${quant.toFixed(4)}`)
-      isTransfer && transferFO(account, user.owner, quant, `Thanks for supporting bitze!`)
+      isTransfer && transferFO(account, user.owner, quant, 'Thanks for supporting bitze!')
     }
   })
 
@@ -122,7 +123,7 @@ const calculate = (balance, account, isTransfer) => {
       let quant = user.staked / amount / 10000 * percent * balance // reward for voter
       fuckMoney = fuckMoney + quant
       console.log(`${user.owner} will get ${quant.toFixed(4)}`)
-      isTransfer && transferFO(account, user.owner, quant, `Thanks for supporting bitze!`)
+      isTransfer && transferFO(account, user.owner, quant, 'Thanks for supporting bitze!')
     }
   })
 
@@ -130,7 +131,7 @@ const calculate = (balance, account, isTransfer) => {
   let salary = (balance - fuckMoney)
   console.log(`I get ${salary} FO`)
 
-  isTransfer && transferFO(account, myOtherAccount, salary)
+  isTransfer && transferFO(account, myOtherAccount, salary-1, 'Thanks for supporting bitze!')
 }
 
 console.log('\n\n')
@@ -140,7 +141,7 @@ console.log(`--------${new Date().toLocaleString()}---------`)
 async function run() {
 
   let account = producer.account
-  let balance = await getRewards(account) // claimrewards, or await queryBalance(account) this will calculate from account balance
+  let balance = await getRewards(account) // getRewards, or await queryBalance(account) this will calculate from account balance
   console.log(`${account} total reward is ${balance} F0`)
   return calculate(balance, account, true) // true - calculate and transfer
 }
