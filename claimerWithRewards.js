@@ -5,8 +5,8 @@ const config = require('./config.json');
 const httpClient = new http.Client()
 
 const producer = {
-  'private-key': config.wif, //TODO 私钥
-  'account': config.producerName, // 账号
+  'private-key': config.wif, //private key
+  'account': config.producerName,
 }
 
 const fibos = FIBOS({
@@ -22,11 +22,12 @@ const fibos = FIBOS({
 
 const getRewards = (account) => {
   return new Promise((resolve, reject) => {
+    console.log(`-------- Try claimRewards ---------`)
     let res = fibos.claimrewardsSync(account)
+    console.log(res)
     try {
-
-      let balance = 0 // 总收益
-
+      console.log(`-------- claimRewards ---------`)
+      let balance = 0 // total rewards
       let inline_traces = res.processed.action_traces[0].inline_traces
       let inline_traces_length = inline_traces.length
 
@@ -63,9 +64,9 @@ const transferFO = (from, to, amount, memo = '') => {
 
   var result = ctx.transferSync(account, to, value, memo)
   if (result && result.broadcast) {
-    console.log(`${to} 获得 ${value}`)
+    console.log(`${to} got ${value}`)
   } else {
-    console.error('转账失败')
+    console.error('Transfer Failed')
   }
 }
 
@@ -93,26 +94,39 @@ const calculate = (balance, account, isTransfer) => {
   let stackArr2 = JSON.parse(res2)
   amount2 = stackArr2.reduce((prew, current) => (prew + (current.staked / 10000)), 0)
 
-  // TODO 如果票数超过三页 继续增加
+  const res3 = httpClient.get(`http://explorer.fibos.rocks/api/voter?producer=${account}&page=2`).readAll().toString()
+  let stackArr3 = JSON.parse(res3)
+  amount3 = stackArr3.reduce((prew, current) => (prew + (current.staked / 10000)), 0)
 
-  amount = amount + amount2
+  // TODO add more if over 3 pages
+
+  amount = amount + amount2 + amount3
 
   console.log(amount)
 
   let fuckMoney = 0
+  const fukcers = ['bitzefibosbp', 'hoffercqtest'] // reward list
+  const percent = 0.6 // percentage
 
   stackArr.map(user => {
-    const fukcers = ['bitzefibosbp', 'hoffercqtest'] // TODO 需要分红的名单
-    const percent = 0.6 // TODO 分红的百分比
     if (fukcers.includes(user.owner)) {
-      let quant = user.staked / amount / 10000 * percent * balance // 分红的钱
+      let quant = user.staked / amount / 10000 * percent * balance // reward for voter
       fuckMoney = fuckMoney + quant
-      console.log(`${user.owner} 获得 ${quant.toFixed(4)}`)
+      console.log(`${user.owner} will get ${quant.toFixed(4)}`)
       isTransfer && transferFO(account, user.owner, quant)
     }
   })
 
-  const myOtherAccount = 'bitzefibosbp' // TODO 剩余转账到小号
+  stackArr2.map(user => {
+    if (fukcers.includes(user.owner)) {
+      let quant = user.staked / amount / 10000 * percent * balance // reward for voter
+      fuckMoney = fuckMoney + quant
+      console.log(`${user.owner} will get ${quant.toFixed(4)}`)
+      isTransfer && transferFO(account, user.owner, quant)
+    }
+  })
+
+  const myOtherAccount = 'bitzefibosbp' // TODO Transfer left to my account
   let salary = (balance - fuckMoney)
   console.log(`I get ${salary} FO`)
 
@@ -126,9 +140,9 @@ console.log(`--------${new Date().toLocaleString()}---------`)
 async function run() {
 
   let account = producer.account
-  let balance = await getRewards(account) // claimrewards，或者 await queryBalance(account) 会按账户余额计算
-  console.log(`${account} 收益是 ${balance} F0`)
-  return calculate(balance, account, true) // true 表示计算并且transfer
+  let balance = await getRewards(account) // claimrewards，or await queryBalance(account) this will calculate from account balance
+  console.log(`${account} total reward is ${balance} F0`)
+  return calculate(balance, account, true) // true - calculate and transfer
 }
 
 run()
