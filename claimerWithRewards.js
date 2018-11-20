@@ -105,7 +105,7 @@ const calculate = (balance, account, isTransfer) => {
   console.log(amount)
 
   let fuckMoney = 0
-  const fukcers = ['bitzefibosbp', 'hoffercqtest'] // reward list
+  const fukcers = ['huobipool123', 'fibosfeijiaa', 'masterbyteso', 'hoffercqtest'] // reward list
   const percent = 0.6 // percentage
 
   stackArr.map(user => {
